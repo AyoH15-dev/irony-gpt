@@ -1,14 +1,16 @@
 import openai
 
-
+# Configuración de la API de OpenAI
 openai.api_key = "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"
 initialPrompt = """hace de cuenta que sos un analizador de sentimientos. yo te paso sentimientos y vos analizas
                    el sentimiento de los mensaje y me das una respuesta con al menos 1 caracter y un máximo de 4 caracteres
                    SOLO RESPUESTAS NUMÉRICAS, -1 es negatividad máxima, 0 es neutral y 1 es positivo. (podes usar valores flotantes)."""
+# Lista de mensajes para la conversación
 messages = [
     {"role": "system", "content": initialPrompt}
 ]
 
+# Clase para analizar sentimientos
 class AnalizadorDeSentimientos:
     def analizar_sentimiento(self, polaridad):
         if polaridad > -0.6 and polaridad <= -0.3:
@@ -28,10 +30,10 @@ class AnalizadorDeSentimientos:
         else :
             return "\x1b[1;31m"+'muy negativo'+"\x1b[0;37m"
 
-
+# Crear una instancia del analizador de sentimientos
 analizador = AnalizadorDeSentimientos()
 
-
+# Bucle para interactuar con el usuario
 while True:
     
     userPrompt = input("\x1b[1;33m"+"\nDecime algo: "+"\x1b[0;37m")
@@ -49,8 +51,8 @@ while True:
         "content": completion.choices[0].message['content']
     })
     
+    # Analizar el sentimiento de la respuesta del modelo
     sentimiento = analizador.analizar_sentimiento(float(completion.choices[0].message['content']))
-
     print(sentimiento)
 
     
